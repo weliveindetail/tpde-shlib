@@ -37,3 +37,5 @@ set_target_properties(tpde-shlib PROPERTIES
   VERSION ${LLVM_VERSION_MAJOR}.${LLVM_VERSION_MINOR}.${LLVM_VERSION_PATCH}
   SOVERSION ${LLVM_VERSION_MAJOR}
 )
+
+add_subdirectory(test)
