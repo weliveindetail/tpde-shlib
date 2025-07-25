@@ -31,6 +31,10 @@ add_llvm_library(tpde-shlib SHARED
     Core
     Passes
     Support
+
+  LINK_LIBS
+    tpde
+    tpde_llvm
 )
 
 set_target_properties(tpde-shlib PROPERTIES
