@@ -24,8 +24,11 @@ if(NOT DEFINED LLVM_MAIN_SRC_DIR)
   set(LLVM_NO_RTTI 1)
 endif()
 
+add_subdirectory(deps/tpde)
+
 add_llvm_library(tpde-shlib SHARED
   tpde-shlib.cpp
+  TPDEPass.cpp
 
   LINK_COMPONENTS
     Core
@@ -33,7 +36,6 @@ add_llvm_library(tpde-shlib SHARED
     Support
 
   LINK_LIBS
-    tpde
     tpde_llvm
 )
 

@@ -1,3 +1,5 @@
+#include "TPDEPass.h"
+
 #include "llvm/ADT/StringRef.h"
 #include "llvm/CodeGen/MachineModuleInfo.h"
 #include "llvm/CodeGen/TargetPassConfig.h"
@@ -8,6 +10,7 @@
 #include "llvm/Target/TargetMachine.h"
 #include "llvm/Target/TargetOptions.h"
 #include "llvm/Target/X86/X86TargetMachine.h"
+#include "llvm/TargetParser/Triple.h"
 
 #include <optional>
 
@@ -27,7 +30,7 @@ public:
                       raw_pwrite_stream *DwoOut, CodeGenFileType FileType,
                       bool DisableVerify = true,
                       MachineModuleInfoWrapperPass *MMIWP = nullptr) override {
-    printf("Adding custom passes");
+    PM.add(new TPDEPass(Out));
     return false; // success
   }
 };
