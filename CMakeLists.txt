@@ -24,7 +24,9 @@ if(NOT DEFINED LLVM_MAIN_SRC_DIR)
   set(LLVM_NO_RTTI 1)
 endif()
 
-add_subdirectory(deps/tpde)
+if(NOT TARGET tpde)
+  add_subdirectory(deps/tpde)
+endif()
 
 add_llvm_library(tpde-shlib SHARED
   tpde-shlib.cpp

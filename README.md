@@ -28,7 +28,7 @@ On the clang command-line, the custom backend is injected via `-Xclang -load -Xc
         -DLLVM_EXTERNAL_PROJECTS=tpde-shlib \
         -DLLVM_EXTERNAL_TPDE_SHLIB_SOURCE_DIR=$(pwd)/tpde-shlib
 
-> ninja -C check-tpde-shlib
+> ninja -C build check-tpde-shlib
 [0/1] Running the TPDE custom backend tests
 -- Testing: 2 tests, 2 workers --
 PASS: TPDE-SHLIB :: load.cpp (1 of 2)
