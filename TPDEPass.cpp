@@ -39,7 +39,9 @@ bool TPDEPass::fallbackToLLVM(Module &M) {
 
 bool TPDEPass::runOnModule(Module &M) {
   std::string ModName = M.getName().str();
-  errs() << "Running TPDE pass on module " << ModName << "\n";
+  if (LLVM_UNLIKELY(getEnvBool("TPDE_DEBUG"))) {
+    errs() << "Running TPDE pass on module " << ModName << "\n";
+  }
 
   auto Compiler = tpde_llvm::LLVMCompiler::create(Triple(M.getTargetTriple()));
   if (!Compiler)

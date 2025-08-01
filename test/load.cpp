@@ -1,11 +1,11 @@
 // Test loading the TPDE shared library and verify X86TargetMachine registration
 
-// RUN: %clang -c %s -o %t.o \
+// RUN: env TPDE_DEBUG=On %clang -c %s -o %t.o \
 // RUN:        -mllvm -print-after-all 2>&1 | FileCheck --check-prefix=CHECK-REGULAR %s
 // CHECK-REGULAR-NOT: Running TPDE pass
 // CHECK-REGULAR: Machine code for function
 
-// RUN: %clang -c %s -o %t.o -Xclang -load -Xclang %tpde_shlib \
+// RUN: env TPDE_DEBUG=On %clang -c %s -o %t.o -Xclang -load -Xclang %tpde_shlib \
 // RUN:        -mllvm -print-after-all 2>&1 | FileCheck  --check-prefix=CHECK-TPDE %s
 // CHECK-TPDE: Running TPDE pass
 // CHECK-TPDE-NOT: Machine code for function

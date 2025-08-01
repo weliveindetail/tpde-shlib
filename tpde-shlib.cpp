@@ -56,7 +56,9 @@ public:
                       raw_pwrite_stream *DwoOut, CodeGenFileType FileType,
                       bool DisableVerify = true,
                       MachineModuleInfoWrapperPass *MMIWP = nullptr) override {
-    errs() << "Running custom LLVM backend\n";
+    if (getEnvBool("TPDE_DEBUG")) {
+      errs() << "Running custom LLVM backend\n";
+    }
 
     if (!MMIWP)
       MMIWP = new MachineModuleInfoWrapperPass(this);

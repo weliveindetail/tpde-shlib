@@ -1,6 +1,6 @@
 // Test that we can link TPDE-compiled objects into valid executables
 
-// RUN: env USE_CUSTOM_LLVM=On \
+// RUN: env USE_CUSTOM_LLVM=On env TPDE_DEBUG=On \
 // RUN:     %clang %s -O3 -o %t.exe -Xclang -load -Xclang %tpde_shlib \
 // RUN:               -mllvm -print-after-all 2>&1 | FileCheck %s
 // CHECK: Running custom LLVM backend
