@@ -1,12 +1,15 @@
 #include "TPDEPass.h"
+#include "Utils.h"
 
 #include "llvm/ADT/StringRef.h"
+#include "llvm/CodeGen/CodeGenTargetMachineImpl.h"
 #include "llvm/CodeGen/MachineFunctionPass.h"
 #include "llvm/CodeGen/MachineModuleInfo.h"
 #include "llvm/CodeGen/Passes.h"
 #include "llvm/CodeGen/TargetPassConfig.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/MC/TargetRegistry.h"
+#include "llvm/Support/CodeGen.h"
 #include "llvm/Support/Debug.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Target/TargetMachine.h"
@@ -14,32 +17,10 @@
 #include "llvm/Target/X86/X86TargetMachine.h"
 #include "llvm/TargetParser/Triple.h"
 
-#include <optional>
-
 using namespace llvm;
 
 constexpr bool AddPassesFail = true;
 constexpr bool AddPassesSuccess = false;
-
-static std::optional<std::string> getEnv(const std::string &Var) {
-  const char *Val = std::getenv(Var.c_str());
-  if (!Val)
-    return std::nullopt;
-  return std::string(Val);
-}
-
-static bool getEnvBool(const std::string &VarName, bool Default = false) {
-  if (auto ValOpt = getEnv(VarName)) {
-    std::string V = *ValOpt;
-    std::transform(V.begin(), V.end(), V.begin(), ::tolower);
-
-    if (V == "1" || V == "true" || V == "yes" || V == "on")
-      return true;
-    if (V == "0" || V == "false" || V == "no" || V == "off")
-      return false;
-  }
-  return Default;
-}
 
 class X86TargetMachineTPDE : public X86TargetMachine {
 public:
@@ -55,7 +36,8 @@ public:
                       raw_pwrite_stream *DwoOut, CodeGenFileType FileType,
                       bool DisableVerify = true,
                       MachineModuleInfoWrapperPass *MMIWP = nullptr) override {
-    PM.add(new TPDEPass(Out));
+    CodeGenTargetMachineImpl *BaseTM = static_cast<X86TargetMachine *>(this);
+    PM.add(new TPDEPass(BaseTM, Out, DwoOut, FileType, DisableVerify, MMIWP));
     return false; // success
   }
 };

@@ -5,7 +5,7 @@ config.name = 'TPDE-SHLIB'
 config.test_format = lit.formats.ShTest(True)
 
 # Describe test files
-config.suffixes = ['.cpp']
+config.suffixes = ['.cpp', '.ll']
 config.excludes = ["Inputs"]
 
 config.test_source_root = os.path.dirname(__file__)
