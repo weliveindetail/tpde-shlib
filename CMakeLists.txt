@@ -49,3 +49,22 @@ set_target_properties(tpde-shlib PROPERTIES
 )
 
 add_subdirectory(test)
+
+install(PROGRAMS bench-tpde.sh
+  DESTINATION .
+  COMPONENT tpde-bench-scripts
+)
+
+add_custom_target(install-tpde-bench
+  COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR} --component tpde-bench-scripts
+  COMMENT "Installing TPDE benchmark"
+)
+
+set(bench_deps tpde-shlib clang clang-resource-headers lld)
+if(LLVM_LINK_LLVM_DYLIB)
+  list(APPEND bench_deps clang-cpp LLVM)
+endif()
+
+foreach(dep IN ITEMS ${bench_deps})
+  add_dependencies(install-tpde-bench "install-${dep}")
+endforeach()
